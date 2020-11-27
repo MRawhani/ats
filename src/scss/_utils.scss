@@ -1,0 +1,45 @@
+.page-title{
+  padding: 1.5rem;
+}
+.title{
+  color: #363636;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.125;
+}
+.stats{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: $default-padding * 1.5;
+  &-child{
+    // margin: $default-padding * .5;
+    flex-basis:100%;
+    // margin-bottom: 0 !important ;
+  }
+}
+@include tablet{
+  .stats-child{
+    // margin: $default-padding * .5;
+    flex-basis: 32%;
+    // margin-bottom: 0 !important ;
+  }
+}
+
+.b-tabs .tab-content{
+  background: #fff;
+
+  .card{
+    border: none
+    ;
+    
+  }
+}
+.tabs li.is-active a{
+  color: $primary;
+}
+
+.b-radio.radio:not(.button){
+  margin-left: .5rem;
+}

@@ -1,32 +1,98 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div>
+    <div v-if="loading">
+      <b-loading :is-full-page="true" v-model="loading"></b-loading>
     </div>
-    <router-view />
+    <div v-else id="app">
+      <nav-bar />
+      <side-bar :menu="menu" />
+      <router-view />
+      <footer-bar />
+    </div>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { mapActions } from "vuex";
+import NavBar from "@/components/NavBar";
+import SideBar from "@/components/Sidebar";
+import FooterBar from "@/components/Footer";
 
-#nav {
-  padding: 30px;
+export default {
+  name: "Home",
+  components: {
+    FooterBar,
+    SideBar,
+    NavBar
+  },
+  data() {
+    return {
+      loading: true
+    };
+  },
+  computed: {
+    menu() {
+      return [
+        "General",
+        [
+          {
+            to: "/",
+            icon: "desktop-mac",
+            label: "Dashboard"
+          },
+          {
+            to: "/about",
+            label: "Details",
+            icon: "help-circle",
+            updateMark: true
+          },
+          {
+            to: "/front",
+            label: "Front Page",
+            icon: "help-circle",
+            updateMark: true
+          },
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+          {
+            label: "Profile",
+            subLabel: "Profile ",
+            icon: "view-list",
+            menu: [
+              {
+                href: "#void",
+                label: "Settings"
+              },
+              {
+                href: "#void",
+                label: "Logout"
+              }
+            ]
+          },
+          {
+            to: "/apply",
+            label: "Apply",
+            icon: "square-edit-outline"
+          }
+        ]
+      ];
     }
+  },
+
+    methods: {
+      ...mapActions(["getCompanyInfo"])
+    },
+
+  async mounted() {
+    this.loading = true;
+    try {
+      await this["getCompanyInfo"]();
+    } catch (e) {
+      this.$buefy.toast.open({
+        message: `Error: ${e.message}`,
+        type: "is-danger"
+      });
+    }
+    this.loading = false;
   }
-}
-</style>
+};
+</script>

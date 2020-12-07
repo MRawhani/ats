@@ -191,14 +191,7 @@
                   </b-dropdown>
                 </div>
               </b-table-column>
-              <b-table-column
-                width="30"
-                custom-key="actions"
-                cell-class="is-actions-cell"
-              >
-                <b-button size="is-small" type="is-danger " icon-left="delete">
-                </b-button>
-              </b-table-column>
+            
             </list-table>
           </card-component>
         </b-tab-item>

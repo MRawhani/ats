@@ -5,20 +5,53 @@
         <div>
           <b-icon icon="buffer" custom-size="default" />
           <b>Applied for </b>&nbsp;{{ job_title }}
-          <b>{{ applicant.first_name }} </b>
+          
           <h5>
             <b-icon icon="time" custom-size="default" />
             {{ formatDate(applicant.created_at) }}
           </h5>
         </div>
       </notification>
-      <iframe src="https://drive.google.com/file/d/1OPal8rp_BjxsyWv_25ZEELrIw9wjxBae/view" style="width:718px; height:700px;" frameborder="0"></iframe>
+      <!-- <embed
+        src="https://www.tinaja.com/glib/pdflink.pdf"
+        width="800px"
+        height="2100px"
+      /> -->
+       <b-collapse class="card" animation="slide" aria-id="contentIdForA11y3">
+            <div
+                slot="trigger" 
+                slot-scope="props"
+                class="card-header"
+                role="button"
+                aria-controls="contentIdForA11y3">
+                <p class="card-header-title">
+                    View Cv
+                </p>
+                <a class="card-header-icon">
+                    <b-icon
+                        :icon="props.open ? 'menu-down' : 'menu-up'">
+                    </b-icon>
+                </a>
+            </div>
+            <div class="card-content">
+                <div class="content">
+                      <iframe
+        src="https://www.tinaja.com/glib/pdflink.pdf"
+        style="width: 100%; height: 500px"
+        frameborder="0"
+      ></iframe>
+                </div>
+            </div>
+           
+        </b-collapse>
+   
 
-      <object 
-      src="https://drive.google.com/file/u/2/d/1OPal8rp_BjxsyWv_25ZEELrIw9wjxBae/view?usp=sharing" width="500"
-       height="375"
-      type="application/pdf"
-      />
+      <!-- <object
+        src="https://www.tinaja.com/glib/pdflink.pdf"
+        width="500"
+        height="375"
+        type="application/pdf"
+      /> -->
       <card-component title="Personal Info" icon="ballot">
         <br />
 
@@ -214,7 +247,7 @@ export default {
     // FilePicker,
     // RadioPicker,
 
-    CardComponent
+    CardComponent,
   },
   data() {
     return {
@@ -236,11 +269,11 @@ export default {
         file: null,
         worked_same_before: null,
         reside: null,
-        reason_to_hire: null
+        reason_to_hire: null,
       },
       genders: ["Male", "Female"],
       fluency: ["Excellent", "Good", "Weak"],
-      education: ["PHD", "Master", "Bachlor", "Secondary"]
+      education: ["PHD", "Master", "Bachlor", "Secondary"],
     };
   },
   computed: {
@@ -251,11 +284,11 @@ export default {
       "getEducation_level",
       "getExperience_roles",
       "getExperience_industries",
-      "getExperience_employment_status"
+      "getExperience_employment_status",
     ]),
     skills() {
       return this.applicant.skills.split(",");
-    }
+    },
   },
   props: ["applicant", "job_title"],
   watch: {
@@ -264,7 +297,7 @@ export default {
     },
     userEmail(newValue) {
       this.form.email = newValue;
-    }
+    },
     // applicant(){
     //     console.log(this.applicant);
     // }
@@ -279,10 +312,10 @@ export default {
         this.$store.commit("user", this.form);
         this.$buefy.snackbar.open({
           message: "Updated",
-          queue: false
+          queue: false,
         });
       }, 500);
-    }
-  }
+    },
+  },
 };
 </script>

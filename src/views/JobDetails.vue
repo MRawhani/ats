@@ -28,7 +28,7 @@
           </template>
 
           <card-component
-            :title="`All Applicants (Not Blocked) (${
+            :title="`All Applicants (${
               getApplicantsFiltered('all').length
             })`"
             class="has-table has-mobile-sort-spaced"

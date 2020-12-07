@@ -2,10 +2,12 @@
   <div>
     <modal-box
       :is-active="isModalActive"
-      :trash-object-name="trashObjectName"
+     :trash-object-name="trashObjectName"
       @confirm="trashConfirm"
       @cancel="trashCancel"
-    />
+    >
+      <cv-view :applicant="trashObjectName" :job_title="$route.params.job_title "/>
+    </modal-box>
     <b-table
       :checked-rows.sync="checkedRows"
       :checkable="checkable"
@@ -15,7 +17,7 @@
       :striped="true"
       :hoverable="true"
       default-sort="created"
-      :data="clients"
+      :data="dataUrl"
     >
       <b-table-column
         label="Date Applied"
@@ -36,7 +38,21 @@
       <b-table-column label="City" field="city" sortable v-slot="props">
         {{ getCity(props.row.city).name }}
       </b-table-column>
-
+      <b-table-column
+        width="30"
+      v-slot="props"
+        custom-key="actions"
+        cell-class="is-actions-cell"
+      >
+        <b-button
+          size="is-small"
+          type=" is-light"
+          icon-left="file-link-outline"
+          @click.prevent="trashModal(props.row)"
+        >
+          View Cv
+        </b-button>
+      </b-table-column>
       <slot />
 
       <section slot="empty" class="section">
@@ -60,67 +76,61 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 import ModalBox from "@/components/ModalBox";
+import CvView from "./CvView.vue";
+
 export default {
   name: "ListTable",
-  components: { ModalBox },
+  components: { ModalBox, CvView },
   props: {
     dataUrl: {
-      type: String,
-      default: null
+      type: Array,
+      default: null,
     },
     checkable: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       isModalActive: false,
       trashObject: null,
       clients: [],
-      isLoading: false,
+      // isLoading: false,
       isMenuNavBarActive: false,
       paginated: false,
       perPage: 10,
-      checkedRows: []
+      checkedRows: [],
     };
   },
+  watch: {
+    dataUrl() {
+      if (this.dataUrl.length > this.perPage) {
+        this.paginated = true;
+      }
+    },
+  },
   computed: {
-    ...mapState(["job_applicants"]),
-    ...mapGetters(["getCity"]),
+    // ...mapState(["job_applicants"]),
+    ...mapGetters(["getCity", "getApplicantsFiltered"]),
 
     trashObjectName() {
       if (this.trashObject) {
-        return this.trashObject.name;
+        console.log(this.trashObject);
+        return this.trashObject;
       }
 
       return null;
-    }
+    },
   },
-  async mounted() {
-    this.isLoading = true;
 
-    try {
-      await this["getJobApplicants"](this.$route.params.id);
-    } catch (e) {
-      this.isLoading = false;
-
-      this.$buefy.toast.open({
-        message: `Error: ${e.message}`,
-        type: "is-danger"
-      });
-    }
-    this.isLoading = false;
-    if (this.job_applicants.applicants) {
-      if (this.job_applicants.applicants.length > this.perPage) {
-        this.paginated = true;
-      }
-      this.clients = this.job_applicants.applicants;
-    }
-  },
   methods: {
     ...mapActions(["getJobApplicants"]),
 
@@ -132,7 +142,7 @@ export default {
       this.isModalActive = false;
       this.$buefy.snackbar.open({
         message: "Confirmed",
-        queue: false
+        queue: false,
       });
     },
     menuNavBarToggle() {
@@ -140,7 +150,7 @@ export default {
     },
     trashCancel() {
       this.isModalActive = false;
-    }
-  }
+    },
+  },
 };
 </script>

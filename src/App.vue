@@ -7,6 +7,7 @@
       <nav-bar />
       <side-bar :menu="menu" />
       <router-view />
+      
       <footer-bar />
     </div>
   </div>

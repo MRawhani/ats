@@ -15,7 +15,7 @@
         <b-icon :icon="headerIcon" custom-size="default" />
       </a>
     </header>
-    <Toolbar> </Toolbar>
+ 
     <div class="card-content">
       <slot />
     </div>
@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import Toolbar from "@/components/CardComponent";
+// import Toolbar from "@/components/CardComponent";
 export default {
   name: "CardComponent",
   components: {
-    Toolbar
+    
   },
   props: {
     title: {

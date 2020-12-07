@@ -27,12 +27,40 @@ export default new Vuex.Store({
 
     job_applicants: {
       applicants: [],
-      meta: {}
-    }
+      meta: {},
+      filters: {
+        citiesSelected: [],
+        en_levelSelected: [],
+        edu_levelSelected: [],
+        exp_roleSelected: [],
+        searchValue: "",
+        dates: [],
+      },
+    },
+    /* */
+    general: {
+      cities: [],
+      categories: [],
+      locations: [],
+      en_levels: [],
+      experience_roles: [],
+      education_levels: [],
+      experience_industries: [],
+    },
+
+    jobs: {
+      filters: {
+        categoriesSelected: [],
+        locationsSelected: [],
+        searchValue: "",
+        dates: [],
+      },
+      list: [],
+    },
   },
   mutations: {
-    ...mutations
+    ...mutations,
   },
   actions,
-  getters
+  getters,
 });

@@ -2,14 +2,12 @@
   <div class="About">
     <div class="page-title">
       <h1 class="title">
-        {{
-          job_applicants.meta.job_id
-            ? getJobById(job_applicants.meta.job_id).title
-            : "Job Title"
-        }}
+        {{ $route.params.job_title }}
       </h1>
     </div>
     <section class="section is-main-section">
+      <applicants-filter />
+      <br />
       <b-tabs type="is-boxed" expanded>
         <b-tab-item>
           <template #header>
@@ -21,25 +19,38 @@
               </b-tag>
             </span>
           </template>
+
           <card-component
-            title="All Applicants"
+            :title="`All Applicants (Not Blocked) (${
+              getApplicantsFiltered('all').length
+            })`"
             class="has-table has-mobile-sort-spaced"
           >
             <list-table
-              :data-url="`${$router.options.base}data-sources/clients.json`"
+              :data-url="getApplicantsFiltered('all')"
+              :isLoading="isLoading"
             >
               <b-table-column
                 width="30"
                 label="Tools"
                 custom-key="actions"
                 cell-class="is-actions-cell"
+                v-slot="props"
               >
                 <b-button
+                  @click.prevent="shortlist_applicant(props.row.id)"
                   size="is-small"
-                  type="is-primary is-light"
-                  icon-left="account-minus"
+                  :type="{
+                    'is-primary is-light': !props.row.shortlisted,
+                    'is-danger is-light': props.row.shortlisted,
+                  }"
+                  :icon-left="
+                    props.row.shortlisted
+                      ? 'account-off-outline'
+                      : 'account-minus'
+                  "
                 >
-                  Shortlist
+                  {{ props.row.shortlisted ? "UnShortlist" : "Shortlist" }}
                 </b-button>
               </b-table-column>
               <b-table-column
@@ -62,41 +73,29 @@
                     >
                       <b-icon icon="dots-vertical" size="is-default" />
                     </button>
-                    <b-dropdown-item aria-role="listitem">
-                      <template>
-                        <b-icon icon="file-link-outline"></b-icon>
-                        <span> View Cv </span>
-                      </template>
-                    </b-dropdown-item>
+
                     <b-dropdown-item aria-role="listitem">
                       <template>
                         <b-icon icon="contacts-outline"></b-icon>
                         <span> Contact Info </span>
                       </template></b-dropdown-item
                     >
-                    <b-dropdown-item aria-role="listitem">
+                    <b-dropdown-item
+                      aria-role="listitem"
+                      @click="block_applicant(props.row.id)"
+                    >
                       <template>
-                        <b-icon icon="account-cancel"></b-icon>
-                        <span> Black List </span>
+                        <b-icon
+                          :icon="
+                            props.row.blocked ? 'account' : 'account-cancel'
+                          "
+                        ></b-icon>
+                        <span>
+                          {{ props.row.blocked ? "UnBlock" : "Block" }}
+                        </span>
                       </template></b-dropdown-item
                     >
                   </b-dropdown>
-                </div>
-              </b-table-column>
-
-              <b-table-column
-                custom-key="actions"
-                cell-class="is-actions-cell"
-                v-slot="props"
-              >
-                <div class="buttons">
-                  <button
-                    class="button is-small is-danger"
-                    type="button"
-                    @click.prevent="trashModal(props.row)"
-                  >
-                    <b-icon icon="trash-can" size="is-small" />
-                  </button>
                 </div>
               </b-table-column>
             </list-table>
@@ -106,28 +105,38 @@
           <template #header>
             <b-icon icon="fullscreen"></b-icon>
             <span>
-              Screened Out <b-tag class="is-info" rounded> 10 </b-tag>
+              Screened Out
+              <b-tag class="is-info" rounded>
+                {{ getApplicantsFiltered("screened").length }}
+              </b-tag>
             </span>
           </template>
           <card-component
-            title="Screend Out Candidates"
+            :title="`Screend Out Candidates`"
             class="has-table has-mobile-sort-spaced"
           >
-            <list-table
-              :data-url="`${$router.options.base}data-sources/clients.json`"
-            >
+            <list-table :data-url="getApplicantsFiltered('screened')">
               <b-table-column
                 width="30"
                 label="Tools"
                 custom-key="actions"
                 cell-class="is-actions-cell"
+                v-slot="props"
               >
                 <b-button
+                  @click.prevent="shortlist_applicant(props.row.id)"
                   size="is-small"
-                  type="is-primary is-light"
-                  icon-left="fullscreen-exit"
+                  :type="{
+                    'is-primary is-light': !props.row.shortlisted,
+                    'is-danger is-light': props.row.shortlisted,
+                  }"
+                  :icon-left="
+                    props.row.shortlisted
+                      ? 'account-off-outline'
+                      : 'account-minus'
+                  "
                 >
-                  Screen IN
+                  {{ props.row.shortlisted ? "UnShortlist" : "Shortlist" }}
                 </b-button>
               </b-table-column>
               <b-table-column
@@ -150,22 +159,26 @@
                     >
                       <b-icon icon="dots-vertical" size="is-default" />
                     </button>
-                    <b-dropdown-item aria-role="listitem">
-                      <template>
-                        <b-icon icon="file-link-outline"></b-icon>
-                        <span> View Cv </span>
-                      </template>
-                    </b-dropdown-item>
+
                     <b-dropdown-item aria-role="listitem">
                       <template>
                         <b-icon icon="contacts-outline"></b-icon>
                         <span> Contact Info </span>
                       </template></b-dropdown-item
                     >
-                    <b-dropdown-item aria-role="listitem">
+                    <b-dropdown-item
+                      aria-role="listitem"
+                      @click="block_applicant(props.row.id)"
+                    >
                       <template>
-                        <b-icon icon="account-cancel"></b-icon>
-                        <span> Black List </span>
+                        <b-icon
+                          :icon="
+                            props.row.blocked ? 'account' : 'account-cancel'
+                          "
+                        ></b-icon>
+                        <span>
+                          {{ props.row.blocked ? "UnBlock" : "Block" }}
+                        </span>
                       </template></b-dropdown-item
                     >
                   </b-dropdown>
@@ -186,36 +199,53 @@
           <template #header>
             <b-icon icon="account-minus-outline"></b-icon>
             <span>
-              Short List <b-tag class="is-info" rounded> 10 </b-tag>
+              Short List
+              <b-tag class="is-info" rounded>
+                {{ getApplicantsFiltered("shorlisted").length }}
+              </b-tag>
             </span>
           </template>
           <card-component
             title="Short Listed Candidates"
             class="has-table has-mobile-sort-spaced"
           >
-            <list-table
-              :data-url="`${$router.options.base}data-sources/clients.json`"
-            >
+            <list-table :data-url="getApplicantsFiltered('shorlisted')">
               <b-table-column
                 width="30"
                 label="Tools"
                 custom-key="actions"
                 cell-class="is-actions-cell"
+                v-slot="props"
               >
                 <b-button
+                  @click.prevent="shortlist_applicant(props.row.id)"
                   size="is-small"
-                  type="is-danger is-light"
-                  icon-left="account-off-outline"
+                  :type="{
+                    'is-primary is-light': !props.row.shortlisted,
+                    'is-danger is-light': props.row.shortlisted,
+                  }"
+                  :icon-left="
+                    props.row.shortlisted
+                      ? 'account-off-outline'
+                      : 'account-minus'
+                  "
                 >
-                  Unshortlist
+                  {{ props.row.shortlisted ? "UnShortlist" : "Shortlist" }}
                 </b-button>
               </b-table-column>
               <b-table-column
                 width="30"
+                label="Tools"
                 custom-key="actions"
                 cell-class="is-actions-cell"
+                v-slot="props"
               >
+                <b-tag v-if="props.row.interviewed" class="is-success" rounded>
+                  Interviewed</b-tag
+                >
                 <b-button
+                  v-else
+                  @click.prevent="interview_applicant(props.row.id)"
                   size="is-small"
                   type="is-primary is-light"
                   icon-left="account-plus-outline"
@@ -223,6 +253,7 @@
                   Add To Interviews
                 </b-button>
               </b-table-column>
+
               <b-table-column
                 width="30"
                 custom-key="actions"
@@ -243,22 +274,11 @@
                     >
                       <b-icon icon="dots-vertical" size="is-default" />
                     </button>
-                    <b-dropdown-item aria-role="listitem">
-                      <template>
-                        <b-icon icon="file-link-outline"></b-icon>
-                        <span> View Cv </span>
-                      </template>
-                    </b-dropdown-item>
+
                     <b-dropdown-item aria-role="listitem">
                       <template>
                         <b-icon icon="contacts-outline"></b-icon>
                         <span> Contact Info </span>
-                      </template></b-dropdown-item
-                    >
-                    <b-dropdown-item aria-role="listitem">
-                      <template>
-                        <b-icon icon="account-off-outline"></b-icon>
-                        <span> Unshortlist </span>
                       </template></b-dropdown-item
                     >
                   </b-dropdown>
@@ -271,16 +291,17 @@
           <template #header>
             <b-icon icon="account-check-outline"></b-icon>
             <span>
-              Interviewed <b-tag class="is-info" rounded> 31</b-tag>
+              Interviewed
+              <b-tag class="is-info" rounded>
+                {{ getApplicantsFiltered("interviewed").length }}</b-tag
+              >
             </span>
           </template>
           <card-component
-            title="Clients"
+            title="Interviewed Applicants"
             class="has-table has-mobile-sort-spaced"
           >
-            <list-table
-              :data-url="`${$router.options.base}data-sources/clients.json`"
-            >
+            <list-table :data-url="getApplicantsFiltered('interviewed')">
               <b-table-column
                 width="30"
                 label="Tools"
@@ -302,22 +323,11 @@
                     >
                       <b-icon icon="dots-vertical" size="is-default" />
                     </button>
-                    <b-dropdown-item aria-role="listitem">
-                      <template>
-                        <b-icon icon="file-link-outline"></b-icon>
-                        <span> View Cv </span>
-                      </template>
-                    </b-dropdown-item>
+
                     <b-dropdown-item aria-role="listitem">
                       <template>
                         <b-icon icon="contacts-outline"></b-icon>
                         <span> Contact Info </span>
-                      </template></b-dropdown-item
-                    >
-                    <b-dropdown-item aria-role="listitem">
-                      <template>
-                        <b-icon icon="account-cancel"></b-icon>
-                        <span> Black List </span>
                       </template></b-dropdown-item
                     >
                   </b-dropdown>
@@ -325,39 +335,49 @@
               </b-table-column>
               <b-table-column
                 width="30"
+                label="Tools"
                 custom-key="actions"
                 cell-class="is-actions-cell"
+                v-slot="props"
               >
                 <b-button
+                  @click.prevent="roster_applicant(props.row.id)"
                   size="is-small"
-                  type="is-primary is-light"
-                  icon-left="pen-plus"
+                  :type="{
+                    'is-primary is-light': !props.row.rostered,
+                    'is-danger is-light': props.row.rostered,
+                  }"
+                  :icon-left="props.row.rostered ? 'pen-minus' : 'pen-plus'"
                 >
-                  Add to Roster
+                  {{
+                    props.row.rostered
+                      ? "Remove from Rosters"
+                      : "Add to Rosters"
+                  }}
                 </b-button>
               </b-table-column>
+
               <b-table-column
                 custom-key="actions"
                 cell-class="is-actions-cell"
                 v-slot="props"
                 label="Hired"
               >
-                <div v-if="props.row.id >= 30" class="buttons">
+                <div  class="buttons">
                   <button
-                    class="button is-small is-danger"
+                    class="button is-small is-success"
+                    @click="hire_applicant(props.row.id)"
+                    :class="{ 'is-light': props.row.hired }"
                     type="button"
-                    @click.prevent="trashModal(props.row)"
                   >
-                    No
-                  </button>
-                  <button class="button is-small is-success" type="button">
-                    Yes
+                    {{ props.row.hired ? "Hired" : " Hire" }}
                   </button>
                 </div>
-                <div v-if="props.row.id < 30" class="buttons">
+                <!-- <div v-if="props.row.id < 30" class="buttons">
                   <button
                     v-if="props.row.id <= 20"
                     class="button is-small is-danger is-light"
+                    :class="''"
                     type="button"
                     @click.prevent="trashModal(props.row)"
                   >
@@ -372,7 +392,7 @@
                   >
                     Hired
                   </button>
-                </div>
+                </div> -->
               </b-table-column>
             </list-table>
           </card-component>
@@ -385,16 +405,50 @@
 <script>
 import CardComponent from "@/components/CardComponent";
 import ListTable from "@/components/DetailsTable";
-import { mapState, mapGetters } from "vuex";
+import ApplicantsFilter from "@/components/Applicantsfilters";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "About",
   components: {
     CardComponent,
-    ListTable
+    ListTable,
+    ApplicantsFilter,
+  },
+  methods: {
+    ...mapActions(["getJobApplicants"]),
+    ...mapMutations([
+      "clearApplicantsFilters",
+      "shortlist_applicant",
+      "interview_applicant",
+      "block_applicant",
+      "roster_applicant",
+      "hire_applicant",
+    ]),
+  },
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+  async mounted() {
+    this.clearApplicantsFilters();
+    this.isLoading = true;
+
+    try {
+      await this["getJobApplicants"](this.$route.params.id);
+    } catch (e) {
+      this.isLoading = false;
+
+      this.$buefy.toast.open({
+        message: `Error: ${e.message}`,
+        type: "is-danger",
+      });
+    }
+    this.isLoading = false;
   },
   computed: {
     ...mapState(["job_applicants"]),
-    ...mapGetters(["getJobById"])
-  }
+    ...mapGetters(["getJobById", "getApplicantsFiltered"]),
+  },
 };
 </script>

@@ -8,7 +8,7 @@ export const getCompanyInfo = async context => {
   context.commit("user", {
     name: res.company.name,
     id: res.company.id,
-    cities: res.cities,
+    data: res,
     avatar: `https://yemenhr.com${res.company.logo}`
   });
 };
@@ -19,6 +19,11 @@ export const getAllJobs = async context => {
   context.commit("jobs", {
     jobs_list: res.data
   });
+};
+
+export const setFilters = async context =>payload=> {
+ 
+  context.commit("filterJobs", payload);
 };
 
 export const getJobApplicants = async context => {

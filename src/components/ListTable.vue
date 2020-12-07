@@ -15,7 +15,7 @@
       :striped="true"
       :hoverable="true"
       default-sort="created"
-      :data="clients"
+      :data="getJobsFiltered"
     >
       <b-table-column label="Posted" sortable field="created" v-slot="props">
         <small class="has-text-grey is-abbr-like" :title="props.row.created">{{
@@ -23,7 +23,7 @@
         }}</small>
       </b-table-column>
       <b-table-column label="Name" field="name" sortable v-slot="props">
-        <router-link :to="`/applicants/${props.row.id}`">
+        <router-link :to="`/applicants/${props.row.id}/${props.row.title}`">
           <h2 class="link">
             {{ props.row.title }}
           </h2>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState,mapGetters } from "vuex";
 import ModalBox from "@/components/ModalBox";
 export default {
   name: "ListTable",
@@ -117,6 +117,7 @@ export default {
       type: Boolean,
       default: false
     }
+    
   },
   data() {
     return {
@@ -140,7 +141,7 @@ export default {
 
       return null;
     },
-    ...mapState(["jobs_list"])
+    ...mapGetters(["getJobsFiltered"])
   },
   async mounted() {
     this.isLoading = true;
@@ -148,6 +149,7 @@ export default {
     try {
       //specified "getAllJobs" just for test, otherwise the method name will be coming as a prop
       //since we will use this table for different kind of actions
+      
       await this["getAllJobs"]();
     } catch (e) {
       this.isLoading = false;
@@ -158,12 +160,12 @@ export default {
       });
     }
     this.isLoading = false;
-    if (this.jobs_list) {
-      if (this.jobs_list.length > this.perPage) {
+      this.clients = this.getJobsFiltered;
+
+      if (this.getJobsFiltered.length > this.perPage) {
         this.paginated = true;
       }
-      this.clients = this.jobs_list;
-    }
+    
   },
   methods: {
     ...mapActions(["getAllJobs"]),

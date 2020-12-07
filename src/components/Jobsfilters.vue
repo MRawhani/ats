@@ -1,4 +1,4 @@
- <template>
+<template>
   <section>
     <b-input
       placeholder="Search..."
@@ -39,7 +39,7 @@
               />
             </div>
             <div class="level-item ">
-              <b-field >
+              <b-field>
                 <b-datepicker
                   ref="datepicker"
                   placeholder="Click to select..."
@@ -75,37 +75,37 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "jobs-filters",
   computed: {
-    ...mapState(["jobs", "general"]),
+    ...mapState(["jobs", "general"])
   },
 
   methods: {
     ...mapMutations(["filterJobs"]),
-    updateLocationsSelected: function (value) {
+    updateLocationsSelected: function(value) {
       this.filterJobs({ type: "location", value });
     },
-    updateCategoriesSelected: function (value) {
+    updateCategoriesSelected: function(value) {
       this.filterJobs({ type: "category", value });
     },
-    changeDates: function (value) {
+    changeDates: function(value) {
       this.filterJobs({ type: "date", value });
     },
-    changeSearch: function (value) {
+    changeSearch: function(value) {
       console.log(value);
       this.filterJobs({ type: "search", value });
-    },
+    }
   },
   components: {
-    Select,
-  },
+    Select
+  }
 };
 </script>
 
 <style>
 .content ul {
-  margin-left: 0  !important;
+  margin-left: 0 !important;
 }
 .level-item {
-    padding:  1rem;
-    justify-content: left;
+  padding: 1rem;
+  justify-content: left;
 }
 </style>

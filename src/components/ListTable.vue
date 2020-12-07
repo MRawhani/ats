@@ -30,8 +30,8 @@
         </router-link>
       </b-table-column>
 
-      <b-table-column label="City" field="city" sortable v-slot="props">
-        {{ props.row.locations[0] }}
+      <b-table-column label="Location" field="locations" sortable v-slot="props">
+        {{ getLocation(props.row.locations[0]).name }}
       </b-table-column>
 
       <b-table-column label="Deadline" v-slot="props">
@@ -141,7 +141,7 @@ export default {
 
       return null;
     },
-    ...mapGetters(["getJobsFiltered"])
+    ...mapGetters(["getJobsFiltered","getLocation"])
   },
   async mounted() {
     this.isLoading = true;

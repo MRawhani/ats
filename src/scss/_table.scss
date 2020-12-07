@@ -80,11 +80,16 @@ table.table {
     display: none;
   }
 }
-
+.card.has-table{
+  .b-table{
+    padding-bottom: 100px !important;
+  }
+}
 @include mobile {
   .card {
     &.has-table {
       .b-table {
+ 
         .table-wrapper + .level {
           .level-left + .level-right {
             margin-top: 0;

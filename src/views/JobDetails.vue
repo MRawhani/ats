@@ -1,9 +1,16 @@
 <template>
   <div class="About">
     <div class="page-title">
+        <router-link to="/" class="button  is-dark">
+      <b-icon icon="arrow-left"></b-icon>
+      
+      </router-link>
+      <br />
+      <br />
       <h1 class="title">
         {{ $route.params.job_title }}
       </h1>
+    
     </div>
     <section class="section is-main-section">
       <applicants-filter />

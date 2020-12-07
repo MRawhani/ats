@@ -3,9 +3,36 @@
     <div class="page-title">
       <h1 class="title">Dashboard</h1>
     </div>
+   
     <section class="section is-main-section">
+       <div class="card">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-48x48">
+              <img
+                src="https://bulma.io/images/placeholders/96x96.png"
+                alt="Placeholder image"
+              />
+            </figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-4">John Smith</p>
+            <p class="subtitle is-6">@johnsmith</p>
+          </div>
+        </div>
+
+        <div class="content">
+          <h3>Welcome tothe dashboard of your compnay</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit odio
+            cum nihil, eligendi ipsum consectetur deleniti aperiam in mollitia
+           .
+          </p>
+        </div>
+      </div>
+    </div> 
       <div class="stats">
-        
         <card-widget
           class="stats-child"
           type="is-primary is-light"
@@ -28,7 +55,7 @@
           :number="200"
           label="Candidates Shortlisted"
         />
-         <card-widget
+        <card-widget
           class="stats-child"
           type="is-primary is-light"
           icon="credit-card"
@@ -36,7 +63,7 @@
           label="Jobs"
         />
       </div>
-      <b-tabs type="is-boxed" expanded>
+      <b-tabs  expanded>
         <b-tab-item>
           <template #header>
             <b-icon icon="tag-outline"></b-icon>
@@ -46,50 +73,7 @@
             </span>
           </template>
           <br />
-          <form @submit.prevent="submit">
-            <b-field label="">
-              <b-input
-                placeholder="Search..."
-                type="search"
-                expanded
-                v-model="form.searchValue"
-              ></b-input>
-              <!-- <p class="control">
-                <b-dropdown v-model="form.categories" multiple aria-role="list">
-                  <button
-                    class="button is-primary"
-                    type="button"
-                    slot="trigger"
-                  >
-                    <span>Choose Category ({{ form.categories.length }})</span>
-                    <b-icon icon="menu-down"></b-icon>
-                  </button>
-
-                  <b-dropdown-item
-                    v-for="(item, index) in selectedOptions"
-                    :key="index"
-                    :value="item.id"
-                    aria-role="listitem"
-                  >
-                    <span>{{ item.value }}</span>
-                  </b-dropdown-item>
-                </b-dropdown>
-              </p>
-              <b-field horizontal>
-                <div class="control">
-                  <button
-                    type="submit"
-                    class="button is-primary"
-                    :class="{ 'is-loading': isLoading }"
-                  >
-                    Search
-                  </button>
-                </div>
-              </b-field> -->
-            </b-field>
-          </form>
-          <br />
-
+     
           <JobsFilters />
           <hr />
           <card-component
@@ -163,9 +147,17 @@
           </card-component>
         </b-tab-item>
         <b-tab-item
-          :label="`Rosters (${getApplicantsFiltered('rostered').length})`"
-          icon="account-box"
+         
         >
+          <template #header>
+            <b-icon icon="account-box"></b-icon>
+            <span>
+              Rosters
+              <b-tag class="is-primary" rounded>
+                {{ getApplicantsFiltered("rostered").length }}
+              </b-tag>
+            </span>
+          </template>
           <card-component
             title="Rosters"
             class="has-table has-mobile-sort-spaced"
@@ -243,9 +235,18 @@
           </card-component>
         </b-tab-item>
         <b-tab-item
-          :label="`BlackList (${getApplicantsFiltered('blocked').length})`"
-          icon="account-cancel-outline"
+        
+          
         >
+          <template #header>
+            <b-icon icon="account-cancel-outline"></b-icon>
+            <span>
+              BlackList
+              <b-tag class="is-primary" rounded>
+                {{ getApplicantsFiltered("blocked").length }}
+              </b-tag>
+            </span>
+          </template>
           <card-component
             title="Blacklisted Applicants"
             class="has-table has-mobile-sort-spaced"
@@ -348,7 +349,7 @@ export default {
     ...mapState(["jobs"]),
   },
   methods: {
-    ...mapMutations(["roster_applicant","block_applicant"]),
+    ...mapMutations(["roster_applicant", "block_applicant"]),
     submit() {
       console.log(this.form);
       this.isLoading = true;

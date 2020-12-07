@@ -47,7 +47,7 @@
         v-slot="props"
       >
         <span class="tag is-primary">
-          {{ props.row.applicants_number || 40 }}
+          {{ props.row.applicants_number || 123 }}
         </span>
       </b-table-column>
 
@@ -58,13 +58,13 @@
       >
         <div class="buttons is-right">
           <a
-            href="https://google.com"
+            :href="`https://yemenhr.com/jobs/${props.row.id}`"
             target="_blank"
             class="button is-small is-success is-light"
           >
             <b-icon icon="eye" size="is-small" />
           </a>
-          <router-link
+          <!-- <router-link
             :to="{ name: 'client.edit', params: { id: props.row.id } }"
             class="button is-small is-secondary"
           >
@@ -77,7 +77,7 @@
             @click.prevent="trashModal(props.row)"
           >
             <b-icon icon="trash-can" size="is-small" />
-          </button>
+          </button> -->
         </div>
       </b-table-column>
       <slot />

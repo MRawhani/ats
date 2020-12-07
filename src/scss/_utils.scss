@@ -43,3 +43,18 @@
 .b-radio.radio:not(.button){
   margin-left: .5rem;
 }
+.flex-wrap{
+  flex-wrap: wrap !important;
+}
+.tab-content{
+  border-right:1px solid #dbdbdb;
+  border-left:1px solid #dbdbdb;
+ 
+}
+.applicant-filter .multiselect__option--highlight,.multiselect__tag{
+  background: $info !important;
+  &::after{
+  background: $info !important;
+
+  }
+}

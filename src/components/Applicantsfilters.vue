@@ -7,9 +7,10 @@
       :value="job_applicants.filters.searchValue"
       @input="changeSearch"
     ></b-input>
+    <br />
     <b-collapse :open="false" aria-id="contentIdForA11y1">
       <b-button
-        type="is-light"
+        type="is-primary "
         slot="trigger"
         slot-scope="props"
         aria-controls="contentIdForA11y1"
@@ -18,9 +19,9 @@
         Filter Table
       </b-button>
 
-      <div class="notification">
+      <div class="applicant-filter notification is-info is-light">
         <div class="content">
-          <nav class="level">
+          <nav class="level flex-wrap">
             <div class="level-item has-text-centered">
               <Select
                 @update-selected="updateCitiesSelected"
@@ -123,6 +124,7 @@ export default {
 
 <style>
 .content ul {
-  margin-left: 0 i !important;
+  margin-left: 0  !important;
 }
+
 </style>

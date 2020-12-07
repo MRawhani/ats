@@ -7,9 +7,10 @@
       :value="jobs.filters.searchValue"
       @input="changeSearch"
     ></b-input>
+    <br />
     <b-collapse :open="false" aria-id="contentIdForA11y1">
       <b-button
-        type="is-light"
+        type="is-light is-success"
         slot="trigger"
         slot-scope="props"
         aria-controls="contentIdForA11y1"
@@ -18,7 +19,7 @@
         Filter Table
       </b-button>
 
-      <div class="notification">
+      <div class="notification is-success is-light">
         <div class="content">
           <nav class="level">
             <div class="level-item has-text-centered">
@@ -37,8 +38,8 @@
                 title="Search For Categories"
               />
             </div>
-            <div class="level-item has-text-centered">
-              <b-field>
+            <div class="level-item ">
+              <b-field >
                 <b-datepicker
                   ref="datepicker"
                   placeholder="Click to select..."
@@ -57,7 +58,7 @@
                 <b-button
                   @click="$refs.datepicker.toggle()"
                   icon-left="calendar-today"
-                  type="is-primary"
+                  type="is-success"
                 />
               </b-field>
             </div>
@@ -101,6 +102,10 @@ export default {
 
 <style>
 .content ul {
-  margin-left: 0 i !important;
+  margin-left: 0  !important;
+}
+.level-item {
+    padding:  1rem;
+    justify-content: left;
 }
 </style>

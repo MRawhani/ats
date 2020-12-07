@@ -9,6 +9,8 @@
       </a>
     </div>
     <div class="navbar-brand is-right">
+      
+      <img style="padding-left:1.6rem" src="@/assets/logo.png" width="112" height="28">
       <a
         class="navbar-item navbar-item-menu-toggle is-hidden-desktop"
         @click.prevent="menuNavBarToggle"

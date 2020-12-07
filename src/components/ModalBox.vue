@@ -1,8 +1,10 @@
 <template>
   <b-modal :active.sync="isModalActive" has-modal-card>
-    <div class="modal-card"  style="width: auto">
+    <div class="modal-card" style="width: auto">
       <header class="modal-card-head">
-        <p class="modal-card-title">{{trashObjectName? trashObjectName.first_name: '' }} CV</p>
+        <p class="modal-card-title">
+          {{ trashObjectName ? trashObjectName.first_name : "" }} CV
+        </p>
       </header>
       <section class="modal-card-body">
         <!-- <p>
@@ -21,39 +23,39 @@
 
 <script>
 export default {
-  name: 'ModalBox',
+  name: "ModalBox",
   props: {
     isActive: {
       type: Boolean,
-      default: false
+      default: false,
     },
     trashObjectName: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
-  data () {
+  data() {
     return {
-      isModalActive: false
-    }
+      isModalActive: false,
+    };
   },
   watch: {
-    isActive (newValue) {
-      this.isModalActive = newValue
+    isActive(newValue) {
+      this.isModalActive = newValue;
     },
-    isModalActive (newValue) {
+    isModalActive(newValue) {
       if (!newValue) {
-        this.cancel()
+        this.cancel();
       }
-    }
+    },
   },
   methods: {
-    cancel () {
-      this.$emit('cancel')
+    cancel() {
+      this.$emit("cancel");
     },
-    confirm () {
-      this.$emit('confirm')
-    }
-  }
-}
+    confirm() {
+      this.$emit("confirm");
+    },
+  },
+};
 </script>

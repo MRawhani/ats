@@ -2,7 +2,7 @@
   <section class="filters-con">
      <div class="columns">
       <div class="column is-four-fifths">
-        <div class="title is-5">Filter Applicants</div>
+        <div class="title is-5">Filter Jobs</div>
       </div>
       <div class="column">
     <b-input

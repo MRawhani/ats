@@ -14,8 +14,8 @@
       :loading="isLoading"
       :paginated="paginated"
       :per-page="perPage"
-      :striped="true"
-      :hoverable="true"
+      :striped="false"
+      :hoverable="false"
       default-sort="created"
       :data="dataUrl"
     >
@@ -52,6 +52,7 @@
         >
           View Cv
         </b-button>
+  
       </b-table-column>
       <slot />
 
@@ -76,7 +77,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import {mapGetters } from "vuex";
 
 import ModalBox from "@/components/ModalBox";
 import CvView from "./CvView.vue";
@@ -132,8 +133,19 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getJobApplicants"]),
+    date(el){
+      debugger
+       let years = 0;
 
+      el.experience.forEach((exp) => {
+        years = parseFloat(years)+ parseFloat(new Number(
+          (new Date(exp.end_at * 1000).getTime() -
+            new Date(exp.start_at * 1000).getTime()) /
+            31536000000
+        ).toFixed(1))
+      });
+      return parseFloat(years)
+    },
     trashModal(trashObject) {
       this.trashObject = trashObject;
       this.isModalActive = true;

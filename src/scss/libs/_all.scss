@@ -10,3 +10,8 @@
 @import "~bulma/bulma";
 @import "~buefy/src/scss/utils/variables-ext";
 @import "~buefy/src/scss/buefy";
+
+$primary: #ff9827;
+$tabs-link-active-color	:$primary;
+$tabs-link-active-border-bottom-color :$primary;
+$modal-content-width : 2000px;

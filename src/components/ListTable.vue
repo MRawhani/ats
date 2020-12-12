@@ -12,7 +12,7 @@
       :loading="isLoading"
       :paginated="paginated"
       :per-page="perPage"
-      :striped="true"
+   
       :hoverable="true"
       default-sort="created"
       :data="getJobsFiltered"
@@ -23,14 +23,19 @@
         }}</small>
       </b-table-column>
       <b-table-column label="Name" field="name" sortable v-slot="props">
-        <router-link :to="`/applicants/${props.row.id}/${props.row.title}`">
+        <a :href="`https://yemenhr.com/jobs/${props.row.id}`" target="_blank">
           <h2 class="link">
             {{ props.row.title }}
           </h2>
-        </router-link>
+        </a>
       </b-table-column>
 
-      <b-table-column label="Location" field="locations" sortable v-slot="props">
+      <b-table-column
+        label="Location"
+        field="locations"
+        sortable
+        v-slot="props"
+      >
         {{ getLocation(props.row.locations[0]).name }}
       </b-table-column>
 
@@ -46,12 +51,12 @@
         centered
         v-slot="props"
       >
-        <span class="tag is-primary">
+        <span class="tag is-dark">
           {{ props.row.applicants_number || 123 }}
         </span>
       </b-table-column>
 
-      <b-table-column
+      <!-- <b-table-column
         custom-key="actions"
         cell-class="is-actions-cell"
         v-slot="props"
@@ -63,7 +68,7 @@
             class="button is-small is-success is-light"
           >
             <b-icon icon="eye" size="is-small" />
-          </a>
+          </a> -->
           <!-- <router-link
             :to="{ name: 'client.edit', params: { id: props.row.id } }"
             class="button is-small is-secondary"
@@ -78,6 +83,34 @@
           >
             <b-icon icon="trash-can" size="is-small" />
           </button> -->
+        <!-- </div>
+      </b-table-column> -->
+      <b-table-column
+        custom-key="actions"
+        cell-class="is-actions-cell"
+        v-slot="props"
+      >
+        <div class="buttons is-right">
+          <router-link
+            v-if="props.row.apply_using_yemenhr"
+            :to="`/applicants/${props.row.id}/${props.row.title}`"
+          >
+            <b-button
+              size="is-small"
+              type=" is-success is-light"
+              icon-left="account-details-outline"
+            >
+              Show Applicants
+            </b-button>
+          </router-link>
+          <b-button
+            v-else
+            size="is-small"
+            type=" is-danger is-light"
+            icon-left=""
+          >
+            Not Applicable
+          </b-button>
         </div>
       </b-table-column>
       <slot />
@@ -103,7 +136,7 @@
 </template>
 
 <script>
-import { mapActions, mapState,mapGetters } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import ModalBox from "@/components/ModalBox";
 export default {
   name: "ListTable",
@@ -111,13 +144,12 @@ export default {
   props: {
     dataUrl: {
       type: String,
-      default: null
+      default: null,
     },
     checkable: {
       type: Boolean,
-      default: false
-    }
-    
+      default: false,
+    },
   },
   data() {
     return {
@@ -128,7 +160,7 @@ export default {
       isMenuNavBarActive: false,
       paginated: false,
       perPage: 10,
-      checkedRows: []
+      checkedRows: [],
     };
   },
   computed: {
@@ -141,7 +173,7 @@ export default {
 
       return null;
     },
-    ...mapGetters(["getJobsFiltered","getLocation"])
+    ...mapGetters(["getJobsFiltered", "getLocation"]),
   },
   async mounted() {
     this.isLoading = true;
@@ -149,23 +181,22 @@ export default {
     try {
       //specified "getAllJobs" just for test, otherwise the method name will be coming as a prop
       //since we will use this table for different kind of actions
-      
+
       await this["getAllJobs"]();
     } catch (e) {
       this.isLoading = false;
 
       this.$buefy.toast.open({
         message: `Error: ${e.message}`,
-        type: "is-danger"
+        type: "is-danger",
       });
     }
     this.isLoading = false;
-      this.clients = this.getJobsFiltered;
+    this.clients = this.getJobsFiltered;
 
-      if (this.getJobsFiltered.length > this.perPage) {
-        this.paginated = true;
-      }
-    
+    if (this.getJobsFiltered.length > this.perPage) {
+      this.paginated = true;
+    }
   },
   methods: {
     ...mapActions(["getAllJobs"]),
@@ -177,7 +208,7 @@ export default {
       this.isModalActive = false;
       this.$buefy.snackbar.open({
         message: "Confirmed",
-        queue: false
+        queue: false,
       });
     },
     menuNavBarToggle() {
@@ -185,7 +216,7 @@ export default {
     },
     trashCancel() {
       this.isModalActive = false;
-    }
-  }
+    },
+  },
 };
 </script>

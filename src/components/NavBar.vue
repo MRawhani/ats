@@ -1,5 +1,5 @@
 <template>
-  <nav v-show="isNavBarVisible" id="navbar-main" class="navbar is-fixed-top">
+  <nav v-show="isNavBarVisible" id="navbar-main" class="navbar is-fixed-top" style="box-shadow: 0 0 15px #00000012;">
     <div class="navbar-brand">
       <a
         class="navbar-item is-hidden-desktop"
@@ -10,7 +10,7 @@
     </div>
     <div class="navbar-brand is-right">
       
-      <img style="padding-left:1.6rem" src="@/assets/logo.png" width="112" height="28">
+      <img style="padding-left:1.6rem; margin: 10px 0;" src="@/assets/logo.png" width="140" height="28">
       <a
         class="navbar-item navbar-item-menu-toggle is-hidden-desktop"
         @click.prevent="menuNavBarToggle"

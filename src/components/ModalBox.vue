@@ -1,6 +1,6 @@
 <template>
   <b-modal :active.sync="isModalActive" has-modal-card>
-    <div class="modal-card" style="width: auto">
+    <div class="modal-card" >
       <header class="modal-card-head">
         <p class="modal-card-title">
           {{ trashObjectName ? trashObjectName.first_name : "" }} CV

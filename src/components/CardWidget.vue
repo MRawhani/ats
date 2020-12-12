@@ -11,7 +11,7 @@
           </h1>
         </div>
       </div>
-      <div v-if="icon" class="level-item has-widget-icon">
+      <div v-if="icon" class="level-item has-widget-icon is-narrow">
         <div class="is-widget-icon">
           <b-icon :icon="icon" size="is-large" :type="type" />
         </div>
@@ -54,3 +54,14 @@ export default {
   }
 };
 </script>
+
+<style>
+  .subtitle {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .level-item{
+     padding: 0 !important;
+  }
+</style>

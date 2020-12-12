@@ -4,7 +4,7 @@
     :value="value"
     tag-placeholder="Add this as new tag"
     :placeholder="title"
-    label="name"
+    :label="label"
     track-by="id"
     :options="options"
     :multiple="true"
@@ -31,7 +31,8 @@ export default {
   props: {
     value: Array,
     options: Array,
-    title: String
+    title: String,
+    label:String
   }
 };
 </script>

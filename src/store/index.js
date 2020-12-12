@@ -33,6 +33,8 @@ export default new Vuex.Store({
         en_levelSelected: [],
         edu_levelSelected: [],
         exp_roleSelected: [],
+        exp_yearsSelected: [],
+        jobsSelected: [],
         searchValue: "",
         dates: [],
       },
@@ -46,6 +48,12 @@ export default new Vuex.Store({
       experience_roles: [],
       education_levels: [],
       experience_industries: [],
+      exp_years: [
+        { id: 1, name: "Less than a year",from:0,to:1 },
+        { id: 3, name: "From 1 to 3 years",from:1,to:3 },
+        { id: 5, name: "From 3 to 5 years",from:3,to:5 },
+        { id: 1000, name: "more than 5 years",from:5,to:1000 },
+      ],
     },
 
     jobs: {

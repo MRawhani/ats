@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card s-card">
     <header v-if="title" class="card-header">
       <p class="card-header-title">
         <b-icon v-if="icon" :icon="icon" custom-size="default" />
@@ -50,3 +50,10 @@ export default {
   }
 };
 </script>
+
+<style>
+  .stats > .s-card{
+    box-shadow: 0 0 5px #ffe9a9;
+    border: none;
+  }
+</style>

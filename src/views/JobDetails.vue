@@ -1,36 +1,30 @@
 <template>
-  <div class="About">
-    <div class="page-title">
-        <router-link to="/" class="button  is-dark">
-      <b-icon icon="arrow-left"></b-icon>
-      
-      </router-link>
-      <br />
-      <br />
-      <h1 class="title">
-        {{ $route.params.job_title }}
-      </h1>
-    
-    </div>
+  <div class="home About">
     <section class="section is-main-section">
+      <div style="margin: 2rem 0 2rem">
+        <h1 class="title is-2">
+          <router-link to="/" class="button is-dark">
+            <b-icon icon="arrow-left"></b-icon>
+          </router-link>
+          {{ $route.params.job_title }}
+        </h1>
+      </div>
       <applicants-filter />
       <br />
-      <b-tabs type="is-boxed" expanded>
+      <b-tabs type="is-boxed is-medium" expanded>
         <b-tab-item>
           <template #header>
             <b-icon icon="account-multiple"></b-icon>
             <span>
               Applicants
-              <b-tag class="is-info" rounded>
+              <b-tag class="is-dark" rounded>
                 {{ job_applicants.applicants.length }}
               </b-tag>
             </span>
           </template>
 
           <card-component
-            :title="`All Applicants (${
-              getApplicantsFiltered('all').length
-            })`"
+            :title="`All Applicants (${getApplicantsFiltered('all').length})`"
             class="has-table has-mobile-sort-spaced"
           >
             <list-table
@@ -60,7 +54,7 @@
                   {{ props.row.shortlisted ? "UnShortlist" : "Shortlist" }}
                 </b-button>
               </b-table-column>
-              <b-table-column
+              <!-- <b-table-column
                 width="30"
                 custom-key="actions"
                 cell-class="is-actions-cell"
@@ -104,7 +98,7 @@
                     >
                   </b-dropdown>
                 </div>
-              </b-table-column>
+              </b-table-column> -->
             </list-table>
           </card-component>
         </b-tab-item>
@@ -113,7 +107,7 @@
             <b-icon icon="fullscreen"></b-icon>
             <span>
               Screened Out
-              <b-tag class="is-info" rounded>
+              <b-tag class="is-dark" rounded>
                 {{ getApplicantsFiltered("screened").length }}
               </b-tag>
             </span>
@@ -146,7 +140,7 @@
                   {{ props.row.shortlisted ? "UnShortlist" : "Shortlist" }}
                 </b-button>
               </b-table-column>
-              <b-table-column
+              <!-- <b-table-column
                 width="30"
                 custom-key="actions"
                 cell-class="is-actions-cell"
@@ -190,8 +184,7 @@
                     >
                   </b-dropdown>
                 </div>
-              </b-table-column>
-            
+              </b-table-column> -->
             </list-table>
           </card-component>
         </b-tab-item>
@@ -200,7 +193,7 @@
             <b-icon icon="account-minus-outline"></b-icon>
             <span>
               Short List
-              <b-tag class="is-info" rounded>
+              <b-tag class="is-dark" rounded>
                 {{ getApplicantsFiltered("shorlisted").length }}
               </b-tag>
             </span>
@@ -240,7 +233,7 @@
                 cell-class="is-actions-cell"
                 v-slot="props"
               >
-                <b-tag v-if="props.row.interviewed" class="is-success" rounded>
+                <b-tag v-if="props.row.interviewed" class="is-dark" rounded>
                   Interviewed</b-tag
                 >
                 <b-button
@@ -254,7 +247,7 @@
                 </b-button>
               </b-table-column>
 
-              <b-table-column
+              <!-- <b-table-column
                 width="30"
                 custom-key="actions"
                 cell-class="is-actions-cell"
@@ -283,7 +276,7 @@
                     >
                   </b-dropdown>
                 </div>
-              </b-table-column>
+              </b-table-column> -->
             </list-table>
           </card-component>
         </b-tab-item>
@@ -292,7 +285,7 @@
             <b-icon icon="account-check-outline"></b-icon>
             <span>
               Interviewed
-              <b-tag class="is-info" rounded>
+              <b-tag class="is-dark" rounded>
                 {{ getApplicantsFiltered("interviewed").length }}</b-tag
               >
             </span>
@@ -302,7 +295,7 @@
             class="has-table has-mobile-sort-spaced"
           >
             <list-table :data-url="getApplicantsFiltered('interviewed')">
-              <b-table-column
+              <!-- <b-table-column
                 width="30"
                 label="Tools"
                 custom-key="actions"
@@ -332,7 +325,7 @@
                     >
                   </b-dropdown>
                 </div>
-              </b-table-column>
+              </b-table-column> -->
               <b-table-column
                 width="30"
                 label="Tools"
@@ -363,7 +356,7 @@
                 v-slot="props"
                 label="Hired"
               >
-                <div  class="buttons">
+                <div class="buttons">
                   <button
                     class="button is-small is-success"
                     @click="hire_applicant(props.row.id)"

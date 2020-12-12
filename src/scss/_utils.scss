@@ -12,11 +12,11 @@
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: $default-padding * 1.5;
+  //margin-bottom: $default-padding * 1.5;
   &-child{
     // margin: $default-padding * .5;
     flex-basis:100%;
-    // margin-bottom: 0 !important ;
+     margin-bottom: 0 !important ;
   }
 }
 @include tablet{
@@ -57,4 +57,24 @@
   background: $info !important;
 
   }
+  .multiselect__tag-icon:hover{
+  background: rgba($color: $info, $alpha: .1) !important;
+
+  }
+}
+
+.content ul {
+  margin-left: 0 !important;
+}
+.filters-con {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+.applicant-filter {
+  margin: 10px -20px -20px;
+  background: #f6f4ee;
+  border-top: 1px solid #ddd;
 }

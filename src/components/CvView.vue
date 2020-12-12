@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <section class="section is-main-section">
+    <section class="">
       <notification class="is-info">
         <div>
           <b-icon icon="buffer" custom-size="default" />
           <b>Applied for </b>&nbsp;{{ job_title }}
           
           <h5>
-            <b-icon icon="time" custom-size="default" />
+            <b-icon icon="update" custom-size="default" />
             {{ formatDate(applicant.created_at) }}
           </h5>
         </div>
@@ -84,6 +84,7 @@
               v-model="applicant.phone"
               type="tel"
               name="phone"
+               icon="phone"
               disabled
               required
             />
@@ -104,7 +105,7 @@
           <b-field>
             <b-input
               name="city"
-              icon="home"
+              icon="gender-male-female"
               v-model="genders[applicant.gender - 1]"
               placeholder="Select a Gender"
               required
@@ -115,7 +116,7 @@
           <b-field>
             <b-input
               :value="getCity(applicant.city).name"
-              icon="home"
+              icon="google-maps"
               placeholder="City"
               name="city"
               required
@@ -125,7 +126,7 @@
         </b-field>
         <hr />
       </card-component>
-      <card-component title="Education" icon="education">
+      <card-component title="Education" icon="ballot">
         <br />
         <template v-for="(edu, index) in applicant.education">
           <div v-bind:key="index">
@@ -159,7 +160,7 @@
           </div>
         </template>
       </card-component>
-      <card-component title="Experiences" icon="education">
+      <card-component title="Experiences" icon="ballot">
         <br />
         <template v-for="(exp, index) in applicant.experience">
           <div v-bind:key="index">
@@ -217,7 +218,22 @@
             />
           </b-field>
         </b-field>
-        <b-field
+         <b-field
+            label="Skills"
+            message="Applicant Skills"
+            horizontal
+            
+          >
+            <b-input
+            
+              type="textarea"
+              :value="applicant.skills"
+         class=" has-fixed-size"
+              required
+              disabled
+            />
+          </b-field>
+        <!-- <b-field
           v-for="(skill, i) in skills"
           v-bind:key="i"
           :label="i === 0 ? 'Skills' : ''"
@@ -226,7 +242,7 @@
           <b-field>
             <b-tag type="is-success">{{ skill }}</b-tag>
           </b-field>
-        </b-field>
+        </b-field> -->
         <hr />
       </card-component>
     </section>

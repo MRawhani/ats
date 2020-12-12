@@ -13,11 +13,12 @@ function user(state, payload) {
   }
   if (payload.data) {
     state.cities = payload.data.cities;
+    
     for (var key in payload.data) {
       // eslint-disable-next-line no-prototype-builtins
       if (payload.data.hasOwnProperty(key)) {
         state.general[key] = payload.data[key];
-      }
+      } 
     }
   }
 }
@@ -59,11 +60,18 @@ function filterApplicants(state, payload) {
   if (payload.type === "exp_role") {
     state.job_applicants.filters.exp_roleSelected = payload.value;
   }
+  if (payload.type === "exp_years") {
+    debugger
+    state.job_applicants.filters.exp_yearsSelected = payload.value;
+  }
   if (payload.type === "search") {
     state.job_applicants.filters.searchValue = payload.value;
   }
   if (payload.type === "date") {
     state.job_applicants.filters.dates = payload.value;
+  }
+  if (payload.type === "jobs") {
+    state.job_applicants.filters.jobsSelected = payload.value;
   }
 }
 function clearApplicantsFilters(state) {
@@ -72,6 +80,8 @@ function clearApplicantsFilters(state) {
     en_levelSelected: [],
     edu_levelSelected: [],
     exp_roleSelected: [],
+    exp_yearsSelected: [],
+    jobsSelected: [],
     searchValue: "",
     dates: [],
   };
